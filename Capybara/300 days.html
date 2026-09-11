@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>300 Days ♡</title>
+  <style>
+
+    :root{
+      --bg:#fff8f3;
+      --paper:#fffdf9;
+      --pink:#f4a6b8;
+      --pink-deep:#e97996;
+      --brown:#6f5a52;
+      --yellow:#ffd98a;
+      --shadow:0 14px 35px rgba(104,76,66,.13);
+    }
+
+    ::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #fff8f3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f4a6b8;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e97996;
+}
+
+    *{box-sizing:border-box}
+
+    html,body{
+      margin:0;
+      min-height:100%;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      color:var(--brown);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255,217,138,.35), transparent 28%),
+        radial-gradient(circle at 85% 15%, rgba(244,166,184,.28), transparent 25%),
+        var(--bg);
+      overflow-x:hidden;
+    }
+
+    body{
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+      cursor: url("photo13.png"), auto;
+    }
+
+
+   
+
+    .app{
+      width:min(980px,100%);
+      min-height:720px;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .card{
+      width:min(680px,100%);
+      background:rgba(255,253,249,.92);
+      border:1px solid rgba(111,90,82,.08);
+      border-radius:30px;
+      box-shadow:var(--shadow);
+      padding:42px 28px;
+      text-align:center;
+      position:relative;
+      backdrop-filter: blur(7px);
+    }
+
+    .tiny{
+      letter-spacing:.18em;
+      font-size:.78rem;
+      opacity:.65;
+      margin-bottom:10px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(2.5rem,8vw,5rem);
+      line-height:1;
+      color:var(--pink-deep);
+    }
+
+     h2{
+      margin:0;
+
+      line-height:1;
+      color:var(--pink-deep);
+    }
+
+    .subtitle{
+      margin:18px auto 6px;
+      max-width:520px;
+      font-size:1rem;
+      line-height:1.8;
+    }
+
+    .start-btn,.memory-btn{
+      border:none;
+      cursor:pointer;
+      margin-top:22px;
+      padding:14px 24px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:1rem;
+      background:linear-gradient(135deg,var(--pink),var(--pink-deep));
+      color:white;
+      box-shadow:0 8px 20px rgba(233,121,150,.28);
+      transition:.2s ease;
+    }
+
+    button,
+    a,
+    .start-btn,
+    .memory-btn {
+    cursor: url("photo14.png"), pointer;
+    }
+
+    .start-btn:hover,.memory-btn:hover{
+      transform:translateY(-2px) scale(1.02);
+    }
+
+    .hint{
+      margin-top:14px;
+      font-size:.82rem;
+      opacity:.55;
+    }
+
+    #memoryStage{
+      display:none;
+      width:100%;
+      min-height:720px;
+      position:relative;
+      padding:20px 0 90px;
+    }
+
+    .stage-title{
+      text-align:center;
+      margin-bottom:18px;
+    }
+
+    .stage-title h2{
+      margin:0;
+      color:var(--pink-deep);
+      font-size:clamp(1.8rem,5vw,3rem);
+    }
+
+    .stage-title p{
+      margin:8px 0 0;
+      opacity:.7;
+    }
+
+    #memoryArea{
+      width:min(920px,100%);
+      min-height:520px;
+      margin:0 auto;
+      position:relative;
+      border-radius:32px;
+    }
+
+    .memory-text{
+      position:absolute;
+      max-width:280px;
+      background:rgba(255,255,255,.93);
+      padding:16px 18px;
+      border-radius:18px;
+      box-shadow:0 12px 28px rgba(100,78,69,.12);
+      line-height:1.7;
+      animation:popIn .65s cubic-bezier(.2,.9,.2,1.15);
+      z-index:4;
+    }
+
+    .polaroid{
+      position:absolute;
+      width:clamp(150px,26vw,235px);
+      background:white;
+      padding:10px 10px 38px;
+      box-shadow:0 14px 28px rgba(91,68,59,.16);
+      border-radius:4px;
+      animation:photoIn .7s cubic-bezier(.2,.8,.2,1.1);
+      z-index:3;
+    }
+
+    .polaroid img{
+      width:100%;
+      aspect-ratio:4/3;
+      object-fit:cover;
+      display:block;
+      background:#f1eae5;
+    }
+
+    .caption{
+      position:absolute;
+      bottom:10px;
+      left:10px;
+      right:10px;
+      font-size:.82rem;
+      text-align:center;
+      color:#7f6860;
+    }
+
+    .memory-btn{
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translateX(-50%);
+      z-index:20;
+      margin:0;
+    }
+
+    .memory-btn:hover{
+      transform:translateX(-50%) translateY(-2px) scale(1.02);
+    }
+
+    .final-card{
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:min(560px,90%);
+      background:rgba(255,253,249,.96);
+      border-radius:28px;
+      padding:36px 26px;
+      text-align:center;
+      box-shadow:var(--shadow);
+      z-index:12;
+      animation:popIn .8s ease;
+    }
+
+    .final-card h3{
+      color:var(--pink-deep);
+      font-size:clamp(2rem,7vw,3.4rem);
+      margin:0 0 14px;
+    }
+
+    .final-card p{
+      line-height:1.9;
+      margin:0;
+    }
+
+    .heart{
+      position:fixed;
+      pointer-events:none;
+      z-index:30;
+      animation:floatHeart 1.4s ease-out forwards;
+      font-size:20px;
+    }
+
+    .sticker{
+      position:absolute;
+      font-size:clamp(1.4rem,4vw,2.2rem);
+      opacity:.72;
+      user-select:none;
+    }
+
+    .s1{left:2%;top:8%}
+    .s2{right:2%;top:14%}
+    .s3{left:5%;bottom:8%}
+    .s4{right:5%;bottom:8%}
+
+    @keyframes popIn{
+      from{opacity:0; transform:scale(.7) translateY(10px)}
+      to{opacity:1; transform:scale(1) translateY(0)}
+    }
+
+    @keyframes photoIn{
+      from{opacity:0; transform:translateY(30px) scale(.78) rotate(0deg)}
+      to{opacity:1}
+    }
+
+    @keyframes floatHeart{
+      0%{opacity:0; transform:translate(-50%,0) scale(.7)}
+      15%{opacity:1}
+      100%{opacity:0; transform:translate(-50%,-120px) scale(1.4) rotate(20deg)}
+    }
+
+    @media (max-width:700px){
+      body{padding:14px}
+      .app{min-height:100vh}
+      .card{padding:34px 20px}
+      #memoryStage{min-height:760px}
+      #memoryArea{
+        min-height:600px;
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        align-content:flex-start;
+        gap:16px;
+        padding:18px 4px 120px;
+      }
+      .memory-text,.polaroid{
+        position:relative !important;
+        left:auto !important;
+        top:auto !important;
+        right:auto !important;
+        bottom:auto !important;
+        transform:none !important;
+      }
+      .memory-text{
+        width:min(90%,300px);
+      }
+      .polaroid{
+        width:min(78vw,235px);
+      }
+      .final-card{
+        position:relative;
+        left:auto;
+        top:auto;
+        transform:none;
+        margin:40px auto 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+
+  <section id="intro" class="card">
+    <div class="tiny">+ 小寶熬夜產出的大驚喜:D +</div>
+    <h2>Sam X Judy 300 DAYs!</h2>
+    <p class="subtitle">
+      你的小禮物到了!<br>
+        </p>
+    <button class="start-btn" onclick="startMemory()">點開看看^O^</button>
+    <div class="hint">慶祝一下ㄅ</div>
+  </section>
+
+  <section id="memoryStage">
+    <div class="stage-title">
+      <h2>我們的 300 天</h2>
+      <p>每點一次，就多一點回憶。</p>
+    </div>
+    <audio src="崴孟三百天禮物.mp3" autoplay></audio>
+
+    <div id="memoryArea"></div>
+
+    <button id="memoryButton" class="memory-btn" onclick="showNextMemory()">再點一下 ♡</button>
+  </section>
+
+  <div class="sticker s1">✦</div>
+  <div class="sticker s2">♡</div>
+  <div class="sticker s3">☁</div>
+  <div class="sticker s4">✿</div>
+</div>
+
+<script>
+  /*
+    ================================
+    ✨ 你主要只需要改這裡 ✨
+    ================================
+
+    type: "text"  = 顯示文字
+    type: "photo" = 顯示照片
+
+    照片請放在和 index.html 同一個資料夾，
+    然後把 src 改成自己的照片檔名。
+  */
+
+  const memories = [
+    {
+      type: "text",
+      text: "大寶!今天終於300天啦~\n送你一首崴孟三百天~"
+    },
+    {
+      type: "photo",
+      src: "photo1.jpg",
+      caption: "就用這張聖火儀式開始慶祝ㄅ♡"
+    },
+  
+    {
+      type: "text",
+      text: "我們去左鎮那時候都還沒到超級熟呢，但是那時候一起等抽獎結果聊了很多天，結束你還帶我去咖啡廳(羞///)"
+    },
+
+    {
+      type: "photo",
+      src: "photo11.jpg",
+      caption: "這時候手上還沒有我的水晶手鍊呢"
+    },
+
+    {
+      type: "text",
+      text: "看相簿的時候，發現一開始都好少你的相片啊寶"
+    },
+
+    {
+      type: "text",
+      text: "後來就變多了XD!"
+    },
+    
+    {
+      type: "photo",
+      src: "photo2.jpg",
+      caption: "第一次來我家一起去散步˙D˙"
+    },
+
+    {
+      type: "photo",
+      src: "photo3.jpg",
+      caption: "是大眼帥帥卡皮!"
+    },
+
+    {
+      type: "photo",
+      src: "photo4.jpg",
+      caption: "我的珍藏帥照MVP✦"
+    },
+
+    {
+      type: "photo",
+      src: "photo5.jpg",
+      caption: "踩到狗屎的皮!"
+    },
+    
+    {
+      type: "text",
+      text: "其實我很喜歡跟你去逛平實公園~"
+    },
+
+    {
+      type: "text",
+      text: "還有逛全聯!"
+    },
+
+    {
+      type: "photo",
+      src: "photo6.jpg",
+      caption: "把多酚吃倒的人類(開玩笑滴"
+    },
+
+    {
+      type: "photo",
+      src: "photo7.jpg",
+      caption: "逛逢甲夜市的金主皮~"
+    },
+
+    {
+      type: "photo",
+      src: "photo8.jpg",
+      caption: "和我家人一起去峨眉湖的路上(冏"
+    },
+
+    {
+      type: "text",
+      text: "我爸媽都說讚的小旅行\n ദ്ദി \n   ദ്ദി"
+    },
+
+    {
+      type: "photo",
+      src: "photo9.jpg",
+      caption: "一臉認真皮"
+    },
+
+
+    {
+      type: "photo",
+      src: "photo12.jpg",
+      caption: "最喜歡黏黏皮<3"
+    },
+
+    {
+      type: "text",
+      text: "以後也要一直黏黏我喔!!"
+    },
+
+
+  ];
+
+  let current = 0;
+
+  function startMemory(){
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("memoryStage").style.display = "block";
+    burstHearts(window.innerWidth/2, window.innerHeight/2);
+  }
+
+  function showNextMemory(){
+    if(current >= memories.length){
+      showFinal();
+      return;
+    }
+
+    const item = memories[current];
+    const area = document.getElementById("memoryArea");
+
+    if(item.type === "text"){
+      const el = document.createElement("div");
+      el.className = "memory-text";
+      el.textContent = item.text;
+
+      placeElement(el, current, "text");
+      area.appendChild(el);
+    }
+
+    if(item.type === "photo"){
+      const wrap = document.createElement("div");
+      wrap.className = "polaroid";
+
+      const img = document.createElement("img");
+      img.src = item.src;
+      img.alt = item.caption || "memory photo";
+
+      // 如果你還沒放照片，會顯示一個溫柔的替代畫面
+      img.onerror = function(){
+        this.style.display = "none";
+        wrap.style.minHeight = "190px";
+        wrap.style.background = "#fff";
+        const placeholder = document.createElement("div");
+        placeholder.innerHTML = "📷<br><small>把照片檔放進資料夾<br>並命名為 " + item.src + "</small>";
+        placeholder.style.padding = "45px 12px";
+        placeholder.style.textAlign = "center";
+        placeholder.style.lineHeight = "1.7";
+        wrap.insertBefore(placeholder, wrap.firstChild);
+      };
+
+      const cap = document.createElement("div");
+      cap.className = "caption";
+      cap.textContent = item.caption || "";
+
+      wrap.appendChild(img);
+      wrap.appendChild(cap);
+
+      placeElement(wrap, current, "photo");
+      area.appendChild(wrap);
+    }
+
+    burstHearts(
+      Math.random() * window.innerWidth,
+      Math.random() * window.innerHeight * 0.7 + 80
+    );
+
+    current++;
+
+    if(current === memories.length){
+      document.getElementById("memoryButton").textContent = "最後一下 ♡";
+    }
+  }
+
+  function placeElement(el, index, type){
+    if(window.innerWidth <= 700) return;
+
+    const positions = [
+      {left:"7%", top:"40px", rotate:"-6deg"},
+      {right:"8%", top:"30px", rotate:"5deg"},
+      {left:"32%", top:"165px", rotate:"-2deg"},
+      {left:"4%", top:"285px", rotate:"4deg"},
+      {right:"5%", top:"300px", rotate:"-4deg"},
+      {left:"34%", top:"385px", rotate:"5deg"},
+      {right:"27%", top:"185px", rotate:"2deg"}
+    ];
+
+    const p = positions[index % positions.length];
+
+    if(p.left) el.style.left = p.left;
+    if(p.right) el.style.right = p.right;
+    if(p.top) el.style.top = p.top;
+
+    if(type === "photo"){
+      el.style.transform = `rotate(${p.rotate})`;
+    }
+  }
+
+  function showFinal(){
+    document.getElementById("memoryButton").style.display = "none";
+
+    const final = document.createElement("div");
+    final.className = "final-card";
+    final.innerHTML = `
+      <h3>Happy 300 Days ♡</h3>
+      <p>
+        哎呀照片實在太多啦<br>
+        剩下的下次再一起回味ㄅ~<br>
+        以後也會一直有更多照片出現在我的相簿裡的>< 愛大寶!
+      </p>
+    `;
+
+    document.getElementById("memoryArea").appendChild(final);
+
+    for(let i=0;i<18;i++){
+      setTimeout(() => {
+        burstHearts(
+          Math.random()*window.innerWidth,
+          Math.random()*window.innerHeight
+        );
+      }, i*90);
+    }
+  }
+
+  function burstHearts(x,y){
+    const hearts = ["♡","♥","✦","✿"];
+    for(let i=0;i<7;i++){
+      const el = document.createElement("div");
+      el.className = "heart";
+      el.textContent = hearts[Math.floor(Math.random()*hearts.length)];
+      el.style.left = (x + (Math.random()-0.5)*100) + "px";
+      el.style.top = (y + (Math.random()-0.5)*40) + "px";
+      el.style.animationDelay = (Math.random()*.15) + "s";
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),1600);
+    }
+  }
+</script>
+
+</body>
+</html>
